@@ -6,8 +6,10 @@ response = HTTParty.get(url)
 in_space = response.parsed_response
 
 inspace_flattened = in_space.flatten[5]
+
 rows =[]
 
+puts inspace_flattened.group_by { |craft| craft.shift }
 table = Terminal::Table.new do |t|
     t.rows = rows 
     t.add_row ["Craft", "Name"]  
@@ -21,7 +23,7 @@ end
 
 table.title = "In Space"
 
-puts table
+# puts table
 
 
 
