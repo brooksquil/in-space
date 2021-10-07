@@ -5,22 +5,24 @@ url = 'http://api.open-notify.org/astros.json'
 response = HTTParty.get(url)
 in_space = response.parsed_response
 
-inspace_flattened = in_space.flatten
+inspace_flattened = in_space.flatten[5]
+rows =[]
 
-rows = []
+table = Terminal::Table.new do |t|
+    t.rows = rows 
+    t.add_row ["Craft", "Name"]  
+    t << :separator 
+    inspace_flattened.each_with_index do | value, index |
+        
+        t.add_row [value["craft"], value["name"]]
+    end
+    
+end
 
-rows << [inspace_flattened[5][0]["craft"], inspace_flattened[5][0]["name"]]
-rows << [inspace_flattened[5][1]["craft"], inspace_flattened[5][1]["name"]]
-rows << [inspace_flattened[5][2]["craft"], inspace_flattened[5][2]["name"]]
-rows << [inspace_flattened[5][3]["craft"], inspace_flattened[5][3]["name"]]
-rows << [inspace_flattened[5][4]["craft"], inspace_flattened[5][4]["name"]]
-rows << [inspace_flattened[5][5]["craft"], inspace_flattened[5][5]["name"]]
-rows << [inspace_flattened[5][6]["craft"], inspace_flattened[5][6]["name"]]
-table = Terminal::Table.new :rows => rows
-table = Terminal::Table.new :headings => ['Craft', 'Name'], :rows => rows
-
+table.title = "In Space"
 
 puts table
+
 
 
 
