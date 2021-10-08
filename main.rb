@@ -12,24 +12,17 @@ table = Terminal::Table.new do |t|
     t.rows = rows 
     t.add_row ["Craft", "Name"]  
     t << :separator 
-    inspace_grouped.each do |key, value|
-        puts value.sort_by{|person| person["name"].split(" ").reverse.join}
-       
-        value.each do |people|
-
-            t.add_row [key[1],people["name"]]
-        end
-        
-    end
-        
-    # t.add_row [value["craft"], value["name"]]
-    
-    
+    inspace_grouped.each{ |key, value|
+        t.add_row [key[1], ""] 
+        sorted_reveresed = value.sort_by{|person| person["name"].split(" ").reverse.join}
+        sorted_reveresed.each {|k,v| craft = key[1]
+            t.add_row ["", k["name"]]
+        }
+    }
 end
-
 table.title = "In Space"
 
-# puts table
+puts table
 
 
 
