@@ -5,22 +5,25 @@ url = 'http://api.open-notify.org/astros.json'
 response = HTTParty.get(url)
 in_space = response.parsed_response
 
-inspace_flattened = in_space.flatten
-
-rows = []
-
-rows << [inspace_flattened[5][0]["craft"], inspace_flattened[5][0]["name"]]
-rows << [inspace_flattened[5][1]["craft"], inspace_flattened[5][1]["name"]]
-rows << [inspace_flattened[5][2]["craft"], inspace_flattened[5][2]["name"]]
-rows << [inspace_flattened[5][3]["craft"], inspace_flattened[5][3]["name"]]
-rows << [inspace_flattened[5][4]["craft"], inspace_flattened[5][4]["name"]]
-rows << [inspace_flattened[5][5]["craft"], inspace_flattened[5][5]["name"]]
-rows << [inspace_flattened[5][6]["craft"], inspace_flattened[5][6]["name"]]
-table = Terminal::Table.new :rows => rows
-table = Terminal::Table.new :headings => ['Craft', 'Name'], :rows => rows
-
+inspace_flattened = in_space.flatten[5]
+inspace_grouped = inspace_flattened.group_by { |craft| craft.shift }
+rows =[]
+table = Terminal::Table.new do |t|
+    t.rows = rows 
+    t.add_row ["Craft", "Name"]  
+    t << :separator 
+    inspace_grouped.each{ |key, value|
+        t.add_row [key[1], ""] 
+        sorted_reveresed = value.sort_by{|person| person["name"].split(" ").reverse.join}
+        sorted_reveresed.each {|k,v| craft = key[1]
+            t.add_row ["", k["name"]]
+        }
+    }
+end
+table.title = "In Space"
 
 puts table
+
 
 
 
