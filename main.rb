@@ -13,7 +13,8 @@ table = Terminal::Table.new do |t|
     t.add_row ["Craft", "Name"]  
     t << :separator 
     inspace_grouped.each do |key, value|
-        puts value.sort_by{|person| person["name"]}
+        puts value.sort_by{|person| person["name"].split(" ").reverse.join}
+       
         value.each do |people|
 
             t.add_row [key[1],people["name"]]
